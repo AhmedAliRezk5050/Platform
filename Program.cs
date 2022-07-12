@@ -10,10 +10,12 @@ app.Use(async (context, next) =>
     && context.Request.Query["custom"] == "true")
     {
         context.Response.ContentType = "text/plain";
-        await context.Response.WriteAsync("Written");
+        await context.Response.WriteAsync("lambda function middleware \n");
     }
     await next();
 });
+
+app.UseMiddleware<Platform.QueryStringMiddleWare>();
 
 app.Run();
 
