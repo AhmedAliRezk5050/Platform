@@ -9,7 +9,6 @@ app.Use(async (context, next) =>
     if (context.Request.Method == HttpMethods.Get
     && context.Request.Query["custom"] == "true")
     {
-        Console.WriteLine("----------------if");
         context.Response.ContentType = "text/plain";
         await context.Response.WriteAsync("Written");
     }
