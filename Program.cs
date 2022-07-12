@@ -1,6 +1,10 @@
+using Platform;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
+
+app.Run(new QueryStringMiddleWare().Invoke);
 
 app.Run(async (context) => {
     await context.Response.WriteAsync($"Run Middleware");

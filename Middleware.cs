@@ -2,8 +2,12 @@
 {
     public class QueryStringMiddleWare
     {
-        private RequestDelegate next;
+        private RequestDelegate? next;
 
+        public QueryStringMiddleWare()
+        {
+        }
+        
         public QueryStringMiddleWare(RequestDelegate nextDelegate)
         {
             next = nextDelegate;
@@ -18,9 +22,13 @@
                 {
                     context.Response.ContentType = "text/plain";
                 }
-                await context.Response.WriteAsync("Class-based Middleware \n");
+                await context.Response.WriteAsync("Class-based Middleware with terminal support \n");
             }
-            await next(context);
+
+            if (next != null)
+            {
+                await next(context);
+            }
         }
     }
 }
