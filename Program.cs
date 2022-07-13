@@ -4,10 +4,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-app.UseMiddleware<Population>();
-
-app.UseMiddleware<Capital>();
-
 app.UseRouting();
 
 app.UseEndpoints(endpoints =>
