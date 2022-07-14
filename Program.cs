@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-app.MapGet("{first}/{second}/{*x}", async context =>
+app.MapGet("{first:alpha:length(3)}/{second:int}", async context =>
 {
     await context.Response.WriteAsync("Request Was Routed\n");
 
