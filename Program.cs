@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-app.MapGet("{f}/{s}/{t}", async context =>
+app.MapGet("files/{filename}.{ext}", async context =>
 {
     await context.Response.WriteAsync("Request Was Routed\n");
 
