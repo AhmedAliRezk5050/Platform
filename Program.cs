@@ -18,10 +18,11 @@ app.UseMiddleware<WeatherMiddleware>();
 
 //app.MapEndpoint<WeatherEndpoint>("endpoint/class");
 
-//app.MapGet("endpoint/function", async (HttpContext context, IResponseFormatter formatter) =>
-//{
-//    await TypeBroker.Formatter
-//    .Format(context, "Endpoint Function: It is sunny in LA");
-//});
+
+app.MapGet("endpoint/function", async (HttpContext context) => {
+    IResponseFormatter formatter =
+    context.RequestServices.GetRequiredService<IResponseFormatter>();
+    await formatter.Format(context, "Endpoint Function: It is sunny in LA");
+});
 
 app.Run();
