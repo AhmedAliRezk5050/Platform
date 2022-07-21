@@ -4,9 +4,18 @@ using Platform.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IResponseFormatter, TimeResponseFormatter>();
+IWebHostEnvironment env = builder.Environment;
 
-builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
+if (env.IsDevelopment())
+{
+    builder.Services.AddScoped<IResponseFormatter, TimeResponseFormatter>();
+    builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
+}
+
+else
+{
+    builder.Services.AddScoped<IResponseFormatter, HtmlResponseFormatter>();
+}
 
 var app = builder.Build();
 
