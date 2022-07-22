@@ -4,18 +4,16 @@ using Platform.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IWebHostEnvironment env = builder.Environment;
+IConfiguration config = builder.Configuration;
 
-if (env.IsDevelopment())
-{
-    builder.Services.AddScoped<IResponseFormatter, TimeResponseFormatter>();
-    builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
-}
+builder.Services.AddScoped<IResponseFormatter>(serviceProvider => {
+    string? typeName = config["services:IResponseFormatter"];
+    return (IResponseFormatter)ActivatorUtilities
+    .CreateInstance(serviceProvider, typeName == null
+    ? typeof(GuidService) : Type.GetType(typeName, true)!);
+});
 
-else
-{
-    builder.Services.AddScoped<IResponseFormatter, HtmlResponseFormatter>();
-}
+builder.Services.AddScoped<ITimeStamper, DefaultTimeStamper>();
 
 var app = builder.Build();
 
