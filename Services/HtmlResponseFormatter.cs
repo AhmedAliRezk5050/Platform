@@ -2,6 +2,8 @@
 {
     public class HtmlResponseFormatter : IResponseFormatter
     {
+        public bool RichOutput => true;
+
         public async Task Format(HttpContext context, string content)
         {
             context.Response.ContentType = "text/html";
