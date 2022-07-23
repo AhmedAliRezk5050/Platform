@@ -31,6 +31,11 @@ app.MapGet("/session", async context =>
 });
 
 app.MapFallback(async context =>
-await context.Response.WriteAsync("Hello World!"));
+{
+    await context.Response
+                 .WriteAsync($"HTTPS Request: {context.Request.IsHttps} \n");
+
+    await context.Response.WriteAsync("Hello World!");
+});
 
 app.Run();
