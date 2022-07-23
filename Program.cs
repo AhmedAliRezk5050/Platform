@@ -1,3 +1,5 @@
+using Platform;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<CookiePolicyOptions>(opts =>
@@ -8,6 +10,8 @@ builder.Services.Configure<CookiePolicyOptions>(opts =>
 var app = builder.Build();
 
 app.UseCookiePolicy();
+
+app.UseMiddleware<ConsentMiddleware>();
 
 app.MapGet("/cookie", async context =>
 {
