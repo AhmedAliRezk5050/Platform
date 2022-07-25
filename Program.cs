@@ -1,8 +1,13 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDistributedMemoryCache(opts =>
+builder.Services.AddDistributedSqlServerCache(opts =>
 {
-    opts.SizeLimit = 200;
+    opts.ConnectionString
+    = builder.Configuration["ConnectionStrings:CacheConnection"];
+
+    opts.SchemaName = "dbo";
+
+    opts.TableName = "DataCache";
 });
 
 var app = builder.Build();
