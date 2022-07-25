@@ -1,21 +1,37 @@
-﻿namespace Platform
+﻿using Microsoft.Extensions.Caching.Distributed;
+
+namespace Platform
 {
     public class SumEndpoint
     {
-        public async Task Endpoint(HttpContext context)
+        public async Task Endpoint(HttpContext context, IDistributedCache cache)
         {
             int count;
 
             int.TryParse((string?)context.Request.RouteValues["count"], out count);
-
-            long total = 0;
-
-            for (int i = 1; i <= count; i++)
+            
+            string cacheKey = $"sum_{count}";
+            
+            string totalString = await cache.GetStringAsync(cacheKey);
+            
+            if (totalString == null)
             {
-                total += i;
+            
+                long total = 0;
+                
+                for (int i = 1; i <= count; i++)
+                {
+                    total += i;
+                }
+                
+                totalString = $"({DateTime.Now.ToLongTimeString()}) {total}";
+                
+                await cache.SetStringAsync(cacheKey, totalString,
+                        new DistributedCacheEntryOptions
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)
+                        });
             }
-
-            string totalString = $"({DateTime.Now.ToLongTimeString()}) {total}";
 
             await context.Response.WriteAsync(
             $"({DateTime.Now.ToLongTimeString()}) Total for {count}"
