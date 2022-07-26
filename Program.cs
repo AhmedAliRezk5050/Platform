@@ -21,6 +21,7 @@ builder.Services.AddSingleton<IResponseFormatter, HtmlResponseFormatter>();
 builder.Services.AddDbContext<CalculationContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:CalcConnection"]);
+    opts.EnableSensitiveDataLogging(true);
 });
 
 builder.Services.AddTransient<SeedData>();
